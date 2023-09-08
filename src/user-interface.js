@@ -103,14 +103,12 @@ UserInterface.prototype.run = function () {
     this.readline.prompt();
   });
 
-  this.readline.on("close", async () => {
-    await this.database.saveList();
-    process.exit(0);
+  this.readline.on("close", () => {
+    this.database.saveList();
   });
 
-  this.readline.on("SIGINT", async () => {
-    await this.database.saveList();
-    process.exit(0);
+  this.readline.on("SIGINT", () => {
+    this.database.saveList();
   });
 };
 

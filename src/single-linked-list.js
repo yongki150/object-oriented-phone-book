@@ -1,5 +1,5 @@
-const fs = require("fs/promises");
-const data = require("../data.json");
+const fs = require("fs");
+const readline = require("readline");
 
 function ListNode({ name, phone }) {
   this.name = name;
@@ -7,10 +7,11 @@ function ListNode({ name, phone }) {
   this.next = null;
 }
 
-function SingleLinkedList({ fs, data }) {
+function SingleLinkedList({ fs, readline }) {
   this.head = null;
   this.fs = fs;
-  this.data = data;
+  this.readline = readline;
+  this.filePath = "assets/data.txt";
 }
 
 SingleLinkedList.prototype.addNewNode = function (name, phone) {
@@ -57,30 +58,48 @@ SingleLinkedList.prototype.removeNode = function (name) {
 };
 
 SingleLinkedList.prototype.loadList = function () {
-  if (!Object.keys(this.data).length) {
-    console.error("> INFO: 저장된 데이터가 존재하지 않습니다.");
-    return;
-  }
+  const readline = this.readline.createInterface({
+    input: this.fs.createReadStream(this.filePath, { encoding: "utf8" }),
+  });
 
-  this.head = this.data;
-  console.log("> INFO: (데이터 파일 → 데이터베이스) 복제 완료하였습니다.");
+  readline.on("line", (line) => {
+    this.addNewNode(JSON.parse(line));
+  });
+
+  readline.on("close", () => {
+    if (!this.head) {
+      console.error("> INFO: 저장된 데이터가 존재하지 않습니다.");
+      return;
+    }
+
+    console.log("> INFO: (데이터 파일 → 데이터베이스) 복제 완료하였습니다.");
+  });
 };
 
-SingleLinkedList.prototype.saveList = async function () {
+SingleLinkedList.prototype.saveList = function () {
   if (!this.head) {
     console.error("> INFO: 저장할 데이터가 존재하지 않습니다.");
-    await this.fs.writeFile("data.json", JSON.stringify({}));
-
     return;
   }
 
-  await this.fs.writeFile("data.json", JSON.stringify(this.head));
+  let cur = this.head;
+  const stream = this.fs.createWriteStream(this.filePath);
 
-  console.log("> INFO: (데이터 파일 ← 데이터베이스) 복제 완료하였습니다.");
+  while (cur) {
+    stream.write(JSON.stringify(cur.userData) + "\n");
+    cur = cur.next;
+  }
+
+  stream.end();
+
+  stream.on("finish", () => {
+    console.log("> INFO: (데이터 파일 ← 데이터베이스) 복제 완료하였습니다.");
+    process.exit(0);
+  });
 };
 
 SingleLinkedList.prototype.getHeadNode = function () {
   return this.head;
 };
 
-module.exports = new SingleLinkedList({ fs, data });
+module.exports = new SingleLinkedList({ fs, readline });
