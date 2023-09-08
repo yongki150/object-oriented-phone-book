@@ -12,11 +12,17 @@ Courtesy of [_널널한 개발자 TV. 객체지향 프로그래밍과 디자인 
 
 ### 1단계: 객체화
 
-![](assets/class-diagram.drawio.png)
+![](assets/step1.drawio.png)
 
 - SingleLinkedList 객체는 자체로 작동합니다. 따라서, UserInterface 객체와 Aggregation 관계입니다.
 - ListNode 객체는 자체로 작동하지 않습니다. 따라서, SingleLinkedList 객체와 Composition 관계입니다..
 - UserInterface 객체는 printAll 메소드가 실행되는 동안만 ListNode 객체와 관계가 유지됩니다.
+
+
+### 2단계: 캡슐화 강화
+
+![](assets/step2.drawio.png)
+
 
 > **TODO:**
 > 
