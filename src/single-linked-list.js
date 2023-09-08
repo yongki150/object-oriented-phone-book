@@ -1,20 +1,11 @@
-const fs = require("fs");
-const readline = require("readline");
+const ListNode = require("./list-node");
 
-function ListNode({ name, phone }) {
-  this.name = name;
-  this.phone = phone;
-  this.next = null;
-}
-
-function SingleLinkedList({ fs, readline }) {
+function SingleLinkedList() {
   this.head = null;
-  this.fs = fs;
-  this.readline = readline;
   this.filePath = "assets/data.txt";
 }
 
-SingleLinkedList.prototype.addNewNode = function (name, phone) {
+SingleLinkedList.prototype.addNewNode = function ({ name, phone }) {
   const newNode = new ListNode({ name, phone });
 
   if (!this.head) {
@@ -22,44 +13,44 @@ SingleLinkedList.prototype.addNewNode = function (name, phone) {
     return;
   }
 
-  newNode.next = this.head.next;
-  this.head.next = newNode;
+  newNode.setNext(this.getHeadNode());
+  this.head = newNode;
 };
 
 SingleLinkedList.prototype.findNode = function (name) {
-  let cur = this.head;
+  let cur = this.getHeadNode();
 
   while (cur) {
-    if (cur.name === name) {
+    if (cur.getName() === name) {
       return cur;
     }
 
-    cur = cur.next;
+    cur = cur.getNext();
   }
 };
 
 SingleLinkedList.prototype.removeNode = function (name) {
   let prev = null;
-  let cur = this.head;
+  let cur = this.getHeadNode();
 
-  if (!cur.next) {
+  if (!cur.getNext()) {
     this.head = null;
   }
 
-  while (cur.next) {
-    if (prev && cur.name === name) {
-      prev.next = cur.next;
+  while (cur) {
+    if (prev && cur.getName() === name) {
+      prev.setNext(cur.getNext());
     } else {
       prev = cur;
     }
 
-    cur = cur.next;
+    cur = cur.getNext();
   }
 };
 
-SingleLinkedList.prototype.loadList = function () {
-  const readline = this.readline.createInterface({
-    input: this.fs.createReadStream(this.filePath, { encoding: "utf8" }),
+SingleLinkedList.prototype.loadList = function ({ fs, readlinePromises }) {
+  const readline = readlinePromises.createInterface({
+    input: fs.createReadStream(this.filePath, { encoding: "utf8" }),
   });
 
   readline.on("line", (line) => {
@@ -76,18 +67,18 @@ SingleLinkedList.prototype.loadList = function () {
   });
 };
 
-SingleLinkedList.prototype.saveList = function () {
+SingleLinkedList.prototype.saveList = function (fs) {
   if (!this.head) {
     console.error("> INFO: 저장할 데이터가 존재하지 않습니다.");
     return;
   }
 
   let cur = this.head;
-  const stream = this.fs.createWriteStream(this.filePath);
+  const stream = fs.createWriteStream(this.filePath);
 
   while (cur) {
-    stream.write(JSON.stringify(cur.userData) + "\n");
-    cur = cur.next;
+    stream.write(JSON.stringify(cur.getUserData()) + "\n");
+    cur = cur.getNext();
   }
 
   stream.end();
@@ -102,4 +93,4 @@ SingleLinkedList.prototype.getHeadNode = function () {
   return this.head;
 };
 
-module.exports = new SingleLinkedList({ fs, readline });
+module.exports = new SingleLinkedList();
