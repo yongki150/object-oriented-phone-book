@@ -5,7 +5,7 @@ function UserInterface(database) {
 }
 
 UserInterface.prototype.add = function (faker) {
-  const name = faker.person.fullName();
+  const name = faker.person.fullName();  
   const phone = faker.phone.number();
 
   const node = this.database.findNode(name);
@@ -35,15 +35,9 @@ UserInterface.prototype.search = function (name) {
 };
 
 UserInterface.prototype.printAll = function () {
-  let cur = this.database.getHeadNode();
-  let i = 0;
+  this.database.printAllNode();
 
-  while (cur) {
-    console.log(`> ${i}: ${JSON.stringify(cur.getUserData())}`);
-    i += 1;
-
-    cur = cur.getNext();
-  }
+  console.log(`>\n> 총 개수: ${this.database.getSize()}`);
 };
 
 UserInterface.prototype.remove = function (name) {

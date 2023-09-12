@@ -3,6 +3,7 @@ const ListNode = require("./list-node");
 function SingleLinkedList() {
   this.head = null;
   this.filePath = "assets/data.txt";
+  this.size = 0;
 }
 
 SingleLinkedList.prototype.addNewNode = function ({ name, phone }) {
@@ -10,15 +11,17 @@ SingleLinkedList.prototype.addNewNode = function ({ name, phone }) {
 
   if (!this.head) {
     this.head = newNode;
+    this.size += 1;
     return;
   }
 
-  newNode.setNext(this.getHeadNode());
+  newNode.setNext(this.head);
   this.head = newNode;
+  this.size += 1;
 };
 
 SingleLinkedList.prototype.findNode = function (name) {
-  let cur = this.getHeadNode();
+  let cur = this.head;
 
   while (cur) {
     if (cur.getName() === name) {
@@ -29,9 +32,21 @@ SingleLinkedList.prototype.findNode = function (name) {
   }
 };
 
+SingleLinkedList.prototype.printAllNode = function () {
+  let cur = this.head;
+  let i = 1;
+
+  while (cur) {
+    console.log(`> ${i}: ${JSON.stringify(cur.getUserData())}`);
+    i += 1;
+
+    cur = cur.getNext();
+  }
+};
+
 SingleLinkedList.prototype.removeNode = function (name) {
   let prev = null;
-  let cur = this.getHeadNode();
+  let cur = this.head;
 
   if (!cur.getNext()) {
     this.head = null;
@@ -46,6 +61,8 @@ SingleLinkedList.prototype.removeNode = function (name) {
 
     cur = cur.getNext();
   }
+
+  this.size -= 1;
 };
 
 SingleLinkedList.prototype.loadList = function ({ fs, readlinePromises }) {
@@ -89,8 +106,8 @@ SingleLinkedList.prototype.saveList = function (fs) {
   });
 };
 
-SingleLinkedList.prototype.getHeadNode = function () {
-  return this.head;
+SingleLinkedList.prototype.getSize = function () {
+  return this.size;
 };
 
 module.exports = new SingleLinkedList();
