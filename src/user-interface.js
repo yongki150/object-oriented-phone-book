@@ -1,11 +1,11 @@
-const database = require("./single-linked-list");
+const database = require("./trie");
 
 function UserInterface(database) {
   this.database = database;
 }
 
 UserInterface.prototype.add = function (faker) {
-  const name = faker.person.fullName();  
+  const name = faker.person.fullName();
   const phone = faker.phone.number();
 
   const node = this.database.findNode(name);
@@ -48,10 +48,10 @@ UserInterface.prototype.remove = function (name) {
     return;
   }
 
+  const userData = node.getUserData();
   this.database.removeNode(name);
-  console.log(
-    `> INFO: ${JSON.stringify(node.getUserData())} 정보를 삭제합니다.`
-  );
+
+  console.log(`> INFO: ${JSON.stringify(userData)} 정보를 삭제합니다.`);
 };
 
 UserInterface.prototype.run = function ({ faker, fs, readlinePromises }) {
