@@ -1,10 +1,14 @@
+const Database = require("../database");
 const TrieNode = require("./trie-node");
 
 function Trie() {
+  Database.call(this);
+
   this.root = new TrieNode();
-  this.filePath = "assets/data.txt";
-  this.size = 0;
 }
+
+Trie.prototype = Object.create(Database.prototype);
+Trie.prototype.constructor = Trie;
 
 Trie.prototype.addNewNode = function ({ name, phone }) {
   let cur = this.root;
@@ -85,25 +89,12 @@ Trie.prototype.removeNode = function (word, node = this.root, idx = 0) {
 };
 
 Trie.prototype.loadList = function ({ fs, readlinePromises }) {
-  const readline = readlinePromises.createInterface({
-    input: fs.createReadStream(this.filePath, { encoding: "utf8" }),
-  });
-
-  readline.on("line", (line) => {
-    this.addNewNode(JSON.parse(line));
-  });
-
-  readline.on("close", () => {
-    if (!this.getSize()) {
-      console.error("> INFO: 저장된 데이터가 존재하지 않습니다.");
-      return;
-    }
-
-    console.log("> INFO: (데이터 파일 → 데이터베이스) 복제 완료하였습니다.");
-  });
+  return Database.prototype.loadList.call(this, { fs, readlinePromises });  
 };
 
 Trie.prototype.saveList = function (fs) {
+  const stream = Database.prototype.saveList.call(this, fs);
+
   const traverseNode = (stream, node) => {
     if (node.getIsEndOfWord()) {
       stream.write(JSON.stringify(node.getUserData()) + "\n");
@@ -113,25 +104,10 @@ Trie.prototype.saveList = function (fs) {
     for (const [, child] of node.children) {
       traverseNode(stream, child);
     }
-  };
-
-  if (!this.getSize()) {
-    console.error("> INFO: 저장할 데이터가 존재하지 않습니다.");
-    return;
-  }
-
-  const stream = fs.createWriteStream(this.filePath);
+  };  
+  
   traverseNode(stream, this.root);
-  stream.end();
-
-  stream.on("finish", () => {
-    console.log("> INFO: (데이터 파일 ← 데이터베이스) 복제 완료하였습니다.");
-    process.exit(0);
-  });
-};
-
-Trie.prototype.getSize = function () {
-  return this.size;
+  stream.end();  
 };
 
 module.exports = new Trie();

@@ -1,7 +1,16 @@
+const fs = require("fs");
+const readlinePromises = require("readline/promises");
 const database = require("./trie");
+const Database = require("./database");
 
-function UserInterface(database) {
-  this.database = database;
+function UserInterface(database, fs, readlinePromises) {
+  this.database = database instanceof Database ? database : null;
+
+  if (!this.database) {
+    throw new Error("데이터베이스가 존재하지 않습니다.");
+  }
+
+  this.database.loadList({ fs, readlinePromises });
 }
 
 UserInterface.prototype.add = function (faker) {
@@ -103,4 +112,4 @@ UserInterface.prototype.run = function ({ faker, fs, readlinePromises }) {
   });
 };
 
-module.exports = new UserInterface(database);
+module.exports = new UserInterface(database, fs, readlinePromises);

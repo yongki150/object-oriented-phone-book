@@ -1,10 +1,14 @@
+const Database = require("../database");
 const ListNode = require("./list-node");
 
 function SingleLinkedList() {
+  Database.call(this);
+
   this.head = null;
-  this.filePath = "assets/data.txt";
-  this.size = 0;
 }
+
+SingleLinkedList.prototype = Object.create(Database.prototype);
+SingleLinkedList.prototype.constructor = SingleLinkedList;
 
 SingleLinkedList.prototype.addNewNode = function ({ name, phone }) {
   const newNode = new ListNode({ name, phone });
@@ -66,48 +70,19 @@ SingleLinkedList.prototype.removeNode = function (name) {
 };
 
 SingleLinkedList.prototype.loadList = function ({ fs, readlinePromises }) {
-  const readline = readlinePromises.createInterface({
-    input: fs.createReadStream(this.filePath, { encoding: "utf8" }),
-  });
-
-  readline.on("line", (line) => {
-    this.addNewNode(JSON.parse(line));
-  });
-
-  readline.on("close", () => {
-    if (!this.head) {
-      console.error("> INFO: 저장된 데이터가 존재하지 않습니다.");
-      return;
-    }
-
-    console.log("> INFO: (데이터 파일 → 데이터베이스) 복제 완료하였습니다.");
-  });
+  Database.prototype.loadList.call(this, { fs, readlinePromises });
 };
 
 SingleLinkedList.prototype.saveList = function (fs) {
-  if (!this.head) {
-    console.error("> INFO: 저장할 데이터가 존재하지 않습니다.");
-    return;
-  }
-
+  const stream = Database.prototype.saveList.call(this, fs);
   let cur = this.head;
-  const stream = fs.createWriteStream(this.filePath);
 
   while (cur) {
     stream.write(JSON.stringify(cur.getUserData()) + "\n");
     cur = cur.getNext();
   }
 
-  stream.end();
-
-  stream.on("finish", () => {
-    console.log("> INFO: (데이터 파일 ← 데이터베이스) 복제 완료하였습니다.");
-    process.exit(0);
-  });
-};
-
-SingleLinkedList.prototype.getSize = function () {
-  return this.size;
+  stream.end();  
 };
 
 module.exports = new SingleLinkedList();
