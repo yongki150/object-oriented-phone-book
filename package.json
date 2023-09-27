@@ -2,9 +2,10 @@
   "name": "object-oriented-phone-book",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "Yongki Kim",
   "license": "ISC",
