@@ -1,5 +1,8 @@
+import fs from "node:fs";
+import readline from "node:readline/promises";
 import Database from "../database";
 import ListNode from "./list-node";
+import type { userData } from "../types/user-data";
 
 function SingleLinkedList() {
   Database.call(this);
@@ -10,8 +13,8 @@ function SingleLinkedList() {
 SingleLinkedList.prototype = Object.create(Database.prototype);
 SingleLinkedList.prototype.constructor = SingleLinkedList;
 
-SingleLinkedList.prototype.addNewNode = function ({ name, phone }) {
-  const newNode = new ListNode({ name, phone });
+SingleLinkedList.prototype.addNewNode = function (param: userData): void {
+  const newNode = new ListNode(param);
 
   if (!this.head) {
     this.head = newNode;
@@ -24,8 +27,10 @@ SingleLinkedList.prototype.addNewNode = function ({ name, phone }) {
   this.size += 1;
 };
 
-SingleLinkedList.prototype.findNode = function (name) {
-  let cur = this.head;
+SingleLinkedList.prototype.findNode = function (
+  name: string
+): typeof ListNode | void {
+  let cur: typeof ListNode = this.head;
 
   while (cur) {
     if (cur.getName() === name) {
@@ -36,9 +41,9 @@ SingleLinkedList.prototype.findNode = function (name) {
   }
 };
 
-SingleLinkedList.prototype.printAllNode = function () {
-  let cur = this.head;
-  let i = 1;
+SingleLinkedList.prototype.printAllNode = function (): void {
+  let cur: typeof ListNode = this.head;
+  let i: number = 1;
 
   while (cur) {
     console.log(`> ${i}: ${JSON.stringify(cur.getUserData())}`);
@@ -48,9 +53,9 @@ SingleLinkedList.prototype.printAllNode = function () {
   }
 };
 
-SingleLinkedList.prototype.removeNode = function (name) {
+SingleLinkedList.prototype.removeNode = function (name: string): void {
   let prev = null;
-  let cur = this.head;
+  let cur: typeof ListNode = this.head;
 
   if (!cur.getNext()) {
     this.head = null;
@@ -69,13 +74,19 @@ SingleLinkedList.prototype.removeNode = function (name) {
   this.size -= 1;
 };
 
-SingleLinkedList.prototype.loadList = function ({ fs, readlinePromises }) {
-  Database.prototype.loadList.call(this, { fs, readlinePromises });
+SingleLinkedList.prototype.loadList = function (param: {
+  fsParam: typeof fs;
+  readlineParam: typeof readline;
+}): void {
+  Database.prototype.loadList.call(this, param);
 };
 
-SingleLinkedList.prototype.saveList = function (fs) {
-  const stream = Database.prototype.saveList.call(this, fs);
-  let cur = this.head;
+SingleLinkedList.prototype.saveList = function (fsParam: typeof fs): void {
+  const stream: fs.WriteStream = Database.prototype.saveList.call(
+    this,
+    fsParam
+  );
+  let cur: typeof ListNode = this.head;
 
   while (cur) {
     stream.write(JSON.stringify(cur.getUserData()) + "\n");

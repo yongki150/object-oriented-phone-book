@@ -1,27 +1,34 @@
+import fs from "node:fs";
+import readline from "node:readline/promises";
+import type { userData } from "./types/user-data";
+
 function Database() {
   this.filePath = "assets/data.txt";
   this.size = 0;
 }
 
-Database.prototype.addNewNode = function ({ name, phone }) {
+Database.prototype.addNewNode = function (param: userData): void {
   throw new Error("구현체에서 호출해주세요.");
 };
 
-Database.prototype.findNode = function (key) {
+Database.prototype.findNode = function (key: string) {
   throw new Error("구현체에서 호출해주세요.");
 };
 
-Database.prototype.printAllNode = function () {
+Database.prototype.printAllNode = function (): void {
   throw new Error("구현체에서 호출해주세요.");
 };
 
-Database.prototype.removeNode = function (key) {
+Database.prototype.removeNode = function (key: string): void {
   throw new Error("구현체에서 호출해주세요.");
 };
 
-Database.prototype.loadList = function ({ fs, readlinePromises }) {
-  const readline = readlinePromises.createInterface({
-    input: fs.createReadStream(this.filePath, { encoding: "utf8" }),
+Database.prototype.loadList = function (param: {
+  fsParam: typeof fs;
+  readlineParam: typeof readline;
+}): void {
+  const readline = param.readlineParam.createInterface({
+    input: param.fsParam.createReadStream(this.filePath, { encoding: "utf8" }),
   });
 
   readline.on("line", (line) => {
@@ -38,8 +45,8 @@ Database.prototype.loadList = function ({ fs, readlinePromises }) {
   });
 };
 
-Database.prototype.saveList = function (fs) {
-  const stream = fs.createWriteStream(this.filePath);
+Database.prototype.saveList = function (fsParam: typeof fs): fs.WriteStream {
+  const stream = fsParam.createWriteStream(this.filePath);
 
   if (!this.getSize()) {
     console.error("> INFO: 저장할 데이터가 존재하지 않습니다.");
@@ -54,7 +61,7 @@ Database.prototype.saveList = function (fs) {
   return stream;
 };
 
-Database.prototype.getSize = function () {
+Database.prototype.getSize = function (): number {
   return this.size;
 };
 

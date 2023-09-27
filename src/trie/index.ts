@@ -1,5 +1,8 @@
+import fs from "node:fs";
+import readline from "node:readline/promises";
 import Database from "../database";
 import TrieNode from "./trie-node";
+import type { userData } from "../types/user-data";
 
 function Trie() {
   Database.call(this);
@@ -10,8 +13,9 @@ function Trie() {
 Trie.prototype = Object.create(Database.prototype);
 Trie.prototype.constructor = Trie;
 
-Trie.prototype.addNewNode = function ({ name, phone }) {
-  let cur = this.root;
+Trie.prototype.addNewNode = function (param: userData): void {
+  const { name, phone } = param;
+  let cur: typeof TrieNode = this.root;
 
   for (const each of name) {
     if (!cur.getChild(each)) {
@@ -26,8 +30,8 @@ Trie.prototype.addNewNode = function ({ name, phone }) {
   this.size += 1;
 };
 
-Trie.prototype.findNode = function (word) {
-  let cur = this.root;
+Trie.prototype.findNode = function (word: string): typeof TrieNode | void {
+  let cur: typeof TrieNode = this.root;
 
   for (const each of word) {
     const child = cur.getChild(each);
@@ -42,7 +46,9 @@ Trie.prototype.findNode = function (word) {
   return cur.getIsEndOfWord() ? cur : undefined;
 };
 
-Trie.prototype.printAllNode = function (node = this.root) {
+Trie.prototype.printAllNode = function (
+  node: typeof TrieNode = this.root
+): void {
   if (node.getIsEndOfWord()) {
     console.log(`> ${JSON.stringify(node.getUserData())}`);
     return;
@@ -53,7 +59,11 @@ Trie.prototype.printAllNode = function (node = this.root) {
   }
 };
 
-Trie.prototype.removeNode = function (word, node = this.root, idx = 0) {
+Trie.prototype.removeNode = function (
+  word: string,
+  node: typeof TrieNode = this.root,
+  idx: number = 0
+): boolean {
   if (idx === word.length) {
     if (node.getIsEndOfWord()) {
       node.setIsEndOfWord(false);
@@ -68,14 +78,14 @@ Trie.prototype.removeNode = function (word, node = this.root, idx = 0) {
     return false;
   }
 
-  const c = word[idx];
-  const child = node.getChild(c);
+  const c: string = word[idx];
+  const child: typeof TrieNode = node.getChild(c);
 
   if (!child) {
     return false;
   }
 
-  const shouldDeleteChild = this.removeNode(word, child, idx + 1);
+  const shouldDeleteChild: boolean = this.removeNode(word, child, idx + 1);
 
   if (shouldDeleteChild) {
     node.deleteChild(c);
@@ -88,14 +98,20 @@ Trie.prototype.removeNode = function (word, node = this.root, idx = 0) {
   return false;
 };
 
-Trie.prototype.loadList = function ({ fs, readlinePromises }) {
-  return Database.prototype.loadList.call(this, { fs, readlinePromises });
+Trie.prototype.loadList = function (param: {
+  fsParam: typeof fs;
+  readlineParam: typeof readline;
+}): void {
+  Database.prototype.loadList.call(this, param);
 };
 
-Trie.prototype.saveList = function (fs) {
-  const stream = Database.prototype.saveList.call(this, fs);
+Trie.prototype.saveList = function (fsParam: typeof fs): void {
+  const stream: fs.WriteStream = Database.prototype.saveList.call(
+    this,
+    fsParam
+  );
 
-  const traverseNode = (stream, node) => {
+  const traverseNode = (stream: fs.WriteStream, node: typeof TrieNode) => {
     if (node.getIsEndOfWord()) {
       stream.write(JSON.stringify(node.getUserData()) + "\n");
       return;
