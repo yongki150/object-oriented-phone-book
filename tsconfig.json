@@ -6,6 +6,7 @@
 
     /* Language and Environment */
     "target": "es2016",
+    "moduleDetection": "force",
 
     /* Modules */
     "module": "commonjs",
