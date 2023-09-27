@@ -1,5 +1,5 @@
-const fs = require("fs");
-const readlinePromises = require("readline/promises");
+const fs = require("node:fs");
+const readlinePromises = require("node:readline/promises");
 const database = require("./trie");
 const Database = require("./database");
 
