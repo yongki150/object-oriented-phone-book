@@ -1,7 +1,7 @@
-const fs = require("node:fs");
-const readlinePromises = require("node:readline/promises");
-const database = require("./trie");
-const Database = require("./database");
+import fs from "node:fs";
+import readlinePromises from "node:readline/promises";
+import database from "./trie";
+import Database from "./database";
 
 function UserInterface(database, fs, readlinePromises) {
   this.database = database instanceof Database ? database : null;
@@ -112,4 +112,4 @@ UserInterface.prototype.run = function ({ faker, fs, readlinePromises }) {
   });
 };
 
-module.exports = new UserInterface(database, fs, readlinePromises);
+export default new UserInterface(database, fs, readlinePromises);

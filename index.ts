@@ -1,7 +1,8 @@
-const fs = require("node:fs");
-const readlinePromises = require("node:readline/promises");
-const { faker } = require("@faker-js/faker");
-const ui = require("./src/user-interface");
+import fs from "node:fs";
+import readlinePromises from "node:readline/promises";
+import { faker } from "@faker-js/faker";
+import ui from "./src/user-interface";
+
 (function () {
   try {
     ui.run({ faker, fs, readlinePromises });

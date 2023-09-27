@@ -1,5 +1,5 @@
-const Database = require("../database");
-const TrieNode = require("./trie-node");
+import Database from "../database";
+import TrieNode from "./trie-node";
 
 function Trie() {
   Database.call(this);
@@ -89,7 +89,7 @@ Trie.prototype.removeNode = function (word, node = this.root, idx = 0) {
 };
 
 Trie.prototype.loadList = function ({ fs, readlinePromises }) {
-  return Database.prototype.loadList.call(this, { fs, readlinePromises });  
+  return Database.prototype.loadList.call(this, { fs, readlinePromises });
 };
 
 Trie.prototype.saveList = function (fs) {
@@ -104,10 +104,10 @@ Trie.prototype.saveList = function (fs) {
     for (const [, child] of node.children) {
       traverseNode(stream, child);
     }
-  };  
-  
+  };
+
   traverseNode(stream, this.root);
-  stream.end();  
+  stream.end();
 };
 
-module.exports = new Trie();
+export default new Trie();

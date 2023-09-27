@@ -23,4 +23,4 @@ ListNode.prototype.setNext = function (node) {
   this.next = node;
 };
 
-module.exports = ListNode;
+export default ListNode;

@@ -9,7 +9,8 @@
     "moduleDetection": "force",
 
     /* Modules */
-    "module": "commonjs",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
 
     /* JavaScript Support */
     "allowJs": true,

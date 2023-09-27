@@ -39,4 +39,4 @@ TrieNode.prototype.setIsEndOfWord = function (isEndOfWord) {
   this.isEndOfWord = isEndOfWord;
 };
 
-module.exports = TrieNode;
+export default TrieNode;

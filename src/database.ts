@@ -58,4 +58,4 @@ Database.prototype.getSize = function () {
   return this.size;
 };
 
-module.exports = Database;
+export default Database;

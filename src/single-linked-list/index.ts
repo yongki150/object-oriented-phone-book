@@ -1,5 +1,5 @@
-const Database = require("../database");
-const ListNode = require("./list-node");
+import Database from "../database";
+import ListNode from "./list-node";
 
 function SingleLinkedList() {
   Database.call(this);
@@ -82,7 +82,7 @@ SingleLinkedList.prototype.saveList = function (fs) {
     cur = cur.getNext();
   }
 
-  stream.end();  
+  stream.end();
 };
 
-module.exports = new SingleLinkedList();
+export default new SingleLinkedList();
