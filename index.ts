@@ -7,6 +7,6 @@ import ui from "./src/user-interface";
   try {
     ui.run({ faker, fs, readline });
   } catch (err) {
-    console.error(`> ERR: ${err.message}`);
+    console.error(`> ERR: ${(err as Error).message}`);
   }
 })();
