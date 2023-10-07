@@ -1,11 +1,11 @@
-import type { userData } from "../types/user-data";
+import UserData from "../types/user-data";
 
-function ListNode(param: userData) {
+function ListNode(param: UserData) {
   this.userData = param;
   this.next = null;
 }
 
-ListNode.prototype.getUserData = function (): userData {
+ListNode.prototype.getUserData = function (): UserData {
   return this.userData;
 };
 

@@ -1,13 +1,13 @@
 import fs from "node:fs";
 import readline from "node:readline/promises";
-import type { userData } from "./types/user-data";
+import UserData from "./types/user-data";
 
 function Database() {
   this.filePath = "assets/data.txt";
   this.size = 0;
 }
 
-Database.prototype.addNewNode = function (param: userData): void {
+Database.prototype.addNewNode = function (param: UserData): void {
   throw new Error("구현체에서 호출해주세요.");
 };
 

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import readline from "node:readline/promises";
 import Database from "../database";
 import ListNode from "./list-node";
-import type { userData } from "../types/user-data";
+import UserData from "../types/user-data";
 
 function SingleLinkedList() {
   Database.call(this);
@@ -13,7 +13,7 @@ function SingleLinkedList() {
 SingleLinkedList.prototype = Object.create(Database.prototype);
 SingleLinkedList.prototype.constructor = SingleLinkedList;
 
-SingleLinkedList.prototype.addNewNode = function (param: userData): void {
+SingleLinkedList.prototype.addNewNode = function (param: UserData): void {
   const newNode = new ListNode(param);
 
   if (!this.head) {

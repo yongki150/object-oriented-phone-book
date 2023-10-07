@@ -1,15 +1,15 @@
-import type { userData } from "../types/user-data";
+import UserData from "../types/user-data";
 
 function TrieNode() {
   this.children = new Map();
   this.isEndOfWord = false;
 }
 
-TrieNode.prototype.getUserData = function (): userData {
+TrieNode.prototype.getUserData = function (): UserData {
   return this.userData;
 };
 
-TrieNode.prototype.setUserData = function (param: userData): void {
+TrieNode.prototype.setUserData = function (param: UserData): void {
   this.userData = param;
 };
 

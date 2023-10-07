@@ -2,7 +2,7 @@ import fs from "node:fs";
 import readline from "node:readline/promises";
 import Database from "../database";
 import TrieNode from "./trie-node";
-import type { userData } from "../types/user-data";
+import UserData from "../types/user-data";
 
 function Trie() {
   Database.call(this);
@@ -13,7 +13,7 @@ function Trie() {
 Trie.prototype = Object.create(Database.prototype);
 Trie.prototype.constructor = Trie;
 
-Trie.prototype.addNewNode = function (param: userData): void {
+Trie.prototype.addNewNode = function (param: UserData): void {
   const { name, phone } = param;
   let cur: typeof TrieNode = this.root;
 
