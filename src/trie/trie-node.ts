@@ -1,9 +1,24 @@
 import UserData from "../types/user-data";
 
-function TrieNode() {
+type TrieNode = {
+  children: Map<string, TrieNode>;
+  isEndOfWord: boolean;
+  userData: UserData;
+  getUserData(): UserData;
+  setUserData(param: UserData): void;
+  deleteUserData(): void;
+  getChild(char: string): TrieNode;
+  setChild(char: string): void;
+  deleteChild(char: string): void;
+  getChildrenSize(): number;
+  getIsEndOfWord(): boolean;
+  setIsEndOfWord(isEndOfWord: boolean): void;
+};
+
+const TrieNode = function (this: TrieNode) {
   this.children = new Map();
   this.isEndOfWord = false;
-}
+} as any as { new (): TrieNode };
 
 TrieNode.prototype.getUserData = function (): UserData {
   return this.userData;
@@ -17,7 +32,7 @@ TrieNode.prototype.deleteUserData = function (): void {
   delete this.userData;
 };
 
-TrieNode.prototype.getChild = function (char: string): typeof TrieNode {
+TrieNode.prototype.getChild = function (char: string): TrieNode {
   return this.children.get(char);
 };
 

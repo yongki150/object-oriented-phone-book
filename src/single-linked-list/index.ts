@@ -4,11 +4,21 @@ import Database from "../database";
 import ListNode from "./list-node";
 import UserData from "../types/user-data";
 
-function SingleLinkedList() {
+type SingleLinkedList = Database & {
+  head: ListNode | null;
+  addNewNode(param: UserData): void;
+  findNode(word: string): ListNode | void;
+  printAllNode(node: ListNode): void;
+  removeNode(word: string, node: ListNode, idx: number): boolean;
+  loadList(param: { fsParam: typeof fs; readlineParam: typeof readline }): void;
+  saveList(fsParam: typeof fs): void;
+};
+
+const SingleLinkedList = function (this: SingleLinkedList) {
   Database.call(this);
 
   this.head = null;
-}
+} as any as { new (): SingleLinkedList };
 
 SingleLinkedList.prototype = Object.create(Database.prototype);
 SingleLinkedList.prototype.constructor = SingleLinkedList;
@@ -27,10 +37,8 @@ SingleLinkedList.prototype.addNewNode = function (param: UserData): void {
   this.size += 1;
 };
 
-SingleLinkedList.prototype.findNode = function (
-  name: string
-): typeof ListNode | void {
-  let cur: typeof ListNode = this.head;
+SingleLinkedList.prototype.findNode = function (name: string): ListNode | void {
+  let cur: ListNode = this.head;
 
   while (cur) {
     if (cur.getName() === name) {
@@ -42,7 +50,7 @@ SingleLinkedList.prototype.findNode = function (
 };
 
 SingleLinkedList.prototype.printAllNode = function (): void {
-  let cur: typeof ListNode = this.head;
+  let cur: ListNode = this.head;
   let i: number = 1;
 
   while (cur) {
@@ -55,7 +63,7 @@ SingleLinkedList.prototype.printAllNode = function (): void {
 
 SingleLinkedList.prototype.removeNode = function (name: string): void {
   let prev = null;
-  let cur: typeof ListNode = this.head;
+  let cur: ListNode = this.head;
 
   if (!cur.getNext()) {
     this.head = null;
@@ -86,7 +94,7 @@ SingleLinkedList.prototype.saveList = function (fsParam: typeof fs): void {
     this,
     fsParam
   );
-  let cur: typeof ListNode = this.head;
+  let cur: ListNode = this.head;
 
   while (cur) {
     stream.write(JSON.stringify(cur.getUserData()) + "\n");

@@ -2,10 +2,21 @@ import fs from "node:fs";
 import readline from "node:readline/promises";
 import UserData from "./types/user-data";
 
-function Database() {
-  this.filePath = "assets/data.txt";
+type Database = {
+  filePath: "assets/data.txt";
+  size: number;
+  addNewNode(param: UserData): void;
+  findNode<T>(key: string): T;
+  printAllNode(): void;
+  removeNode(key: string): void;
+  loadList(param: { fsParam: typeof fs; readlineParam: typeof readline }): void;
+  saveList(fsParam: typeof fs): fs.WriteStream;
+  getSize(): number;
+};
+
+const Database = function (this: Database) {
   this.size = 0;
-}
+};
 
 Database.prototype.addNewNode = function (param: UserData): void {
   throw new Error("구현체에서 호출해주세요.");

@@ -5,25 +5,40 @@ import database from "./trie";
 import TrieNode from "./trie/trie-node";
 import Database from "./database";
 
-function UserInterface(
-  database: typeof Database,
+type UserInterface = {
+  database: Database;
+  add(param: typeof faker): void;
+  search(name: string): void;
+  printAll(): void;
+  remove(name: string): void;
+  run(param: {
+    fakerParam: typeof faker;
+    fsParam: typeof fs;
+    readlineParam: typeof readline;
+  }): void;
+};
+
+const UserInterface = function (
+  this: UserInterface,
+  database: Database,
   fsParam: typeof fs,
   readlineParam: typeof readline
 ) {
-  this.database = database instanceof Database ? database : null;
-
-  if (!this.database) {
-    throw new Error("데이터베이스가 존재하지 않습니다.");
-  }
-
+  this.database = database;
   this.database.loadList({ fsParam, readlineParam });
-}
+} as any as {
+  new (
+    database: Database,
+    fsParam: typeof fs,
+    readlineParam: typeof readline
+  ): UserInterface;
+};
 
 UserInterface.prototype.add = function (param: typeof faker): void {
   const name: string = param.person.fullName();
   const phone: string = param.phone.number();
 
-  const node: typeof TrieNode = this.database.findNode(name);
+  const node: TrieNode = this.database.findNode(name);
 
   if (node) {
     console.error(`> ERR: ${name}의 정보가 중복됩니다.`);
@@ -37,7 +52,7 @@ UserInterface.prototype.add = function (param: typeof faker): void {
 };
 
 UserInterface.prototype.search = function (name: string): void {
-  const node: typeof TrieNode = this.database.findNode(name);
+  const node: TrieNode = this.database.findNode(name);
 
   if (!node) {
     console.error(`> ERR: ${name}의 정보가 존재하지 않습니다.`);
@@ -56,7 +71,7 @@ UserInterface.prototype.printAll = function (): void {
 };
 
 UserInterface.prototype.remove = function (name: string): void {
-  const node: typeof TrieNode = this.database.findNode(name);
+  const node: TrieNode = this.database.findNode(name);
 
   if (!node) {
     console.error(`> ERR: ${name}의 정보가 존재하지 않습니다.`);
