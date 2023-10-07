@@ -5,7 +5,7 @@ import ui from "./src/user-interface";
 
 (function () {
   try {
-    ui.run({ faker, fs, readline });
+    ui.run({ fakerParam: faker, fsParam: fs, readlineParam: readline });
   } catch (err) {
     console.error(`> ERR: ${(err as Error).message}`);
   }
