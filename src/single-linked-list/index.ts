@@ -122,4 +122,4 @@ SingleLinkedList.prototype.saveList = function (
   stream.end();
 };
 
-export default new SingleLinkedList();
+export default SingleLinkedList;

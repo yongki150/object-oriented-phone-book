@@ -142,4 +142,4 @@ Trie.prototype.saveList = function (this: Trie, fsParam: typeof fs): void {
   stream.end();
 };
 
-export default new Trie();
+export default Trie;

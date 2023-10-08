@@ -1,8 +1,7 @@
 import fs from "node:fs";
 import readline from "node:readline/promises";
 import { faker } from "@faker-js/faker";
-import database from "./trie";
-import TrieNode from "./trie/trie-node";
+import Trie from "./trie";
 import Database from "./database";
 
 type UserInterface = {
@@ -24,7 +23,7 @@ const UserInterface = function (
   fsParam: typeof fs,
   readlineParam: typeof readline
 ) {
-  this.database = database;
+  this.database = database as Trie;
   this.database.loadList({ fsParam, readlineParam });
 } as any as {
   new (
@@ -41,7 +40,7 @@ UserInterface.prototype.add = function (
   const name: string = param.person.fullName();
   const phone: string = param.phone.number();
 
-  const node: TrieNode = this.database.findNode(name);
+  const node = this.database.findNode<Trie>(name);
 
   if (node) {
     console.error(`> ERR: ${name}의 정보가 중복됩니다.`);
@@ -58,7 +57,7 @@ UserInterface.prototype.search = function (
   this: UserInterface,
   name: string
 ): void {
-  const node: TrieNode = this.database.findNode(name);
+  const node = this.database.findNode<Trie>(name);
 
   if (!node) {
     console.error(`> ERR: ${name}의 정보가 존재하지 않습니다.`);
@@ -80,7 +79,7 @@ UserInterface.prototype.remove = function (
   this: UserInterface,
   name: string
 ): void {
-  const node: TrieNode = this.database.findNode(name);
+  const node = this.database.findNode<Trie>(name);
 
   if (!node) {
     console.error(`> ERR: ${name}의 정보가 존재하지 않습니다.`);
@@ -149,4 +148,4 @@ UserInterface.prototype.run = function (
   });
 };
 
-export default new UserInterface(database, fs, readline);
+export default new UserInterface(new Trie(), fs, readline);

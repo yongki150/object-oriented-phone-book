@@ -7,7 +7,7 @@ interface Database {
   filePath: "assets/data.txt";
   size: number;
   addNewNode(param: UserData): void;
-  findNode(key: string): Node;
+  findNode<T>(key: string): Node<T>;
   printAllNode(): void;
   removeNode(key: string): void;
   loadList(param: { fsParam: typeof fs; readlineParam: typeof readline }): void;
@@ -24,7 +24,7 @@ Database.prototype.addNewNode = function (param: UserData): void {
   throw new Error("구현체에서 호출해주세요.");
 };
 
-Database.prototype.findNode = function (key: string): Node {
+Database.prototype.findNode = function <T>(key: string): Node<T> {
   throw new Error("구현체에서 호출해주세요.");
 };
 
