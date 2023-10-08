@@ -23,4 +23,14 @@
 
 ### 3단계: 추상체 분리
 
+> **NOTE: JavaScript 버전**
+>
+> https://github.com/yongki150/object-oriented-phone-book
+
 ![](assets/step3.drawio.png)
+
+> **NOTE: TypeScript 버전**
+>
+> https://github.com/yongki150/object-oriented-phone-book/tree/ts
+
+![](assets/step4.drawio.png)
