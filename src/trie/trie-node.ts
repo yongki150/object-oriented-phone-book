@@ -3,7 +3,7 @@ import UserData from "../types/user-data";
 type TrieNode = {
   children: Map<string, TrieNode>;
   isEndOfWord: boolean;
-  userData: UserData;
+  userData?: UserData;
   getUserData(): UserData;
   setUserData(param: UserData): void;
   deleteUserData(): void;
@@ -28,7 +28,7 @@ TrieNode.prototype.setUserData = function (param: UserData): void {
   this.userData = param;
 };
 
-TrieNode.prototype.deleteUserData = function (): void {
+TrieNode.prototype.deleteUserData = function (this: TrieNode): void {
   delete this.userData;
 };
 
