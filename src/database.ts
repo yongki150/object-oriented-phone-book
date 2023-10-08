@@ -15,6 +15,7 @@ type Database = {
 };
 
 const Database = function (this: Database) {
+  this.filePath = "assets/data.txt";
   this.size = 0;
 };
 
@@ -22,7 +23,7 @@ Database.prototype.addNewNode = function (param: UserData): void {
   throw new Error("구현체에서 호출해주세요.");
 };
 
-Database.prototype.findNode = function (key: string) {
+Database.prototype.findNode = function <T>(key: string): T {
   throw new Error("구현체에서 호출해주세요.");
 };
 
@@ -34,12 +35,17 @@ Database.prototype.removeNode = function (key: string): void {
   throw new Error("구현체에서 호출해주세요.");
 };
 
-Database.prototype.loadList = function (param: {
-  fsParam: typeof fs;
-  readlineParam: typeof readline;
-}): void {
+Database.prototype.loadList = function (
+  this: Database,
+  param: {
+    fsParam: typeof fs;
+    readlineParam: typeof readline;
+  }
+): void {
   const readline = param.readlineParam.createInterface({
-    input: param.fsParam.createReadStream(this.filePath, { encoding: "utf8" }),
+    input: param.fsParam.createReadStream(this.filePath, {
+      encoding: "utf8",
+    }),
   });
 
   readline.on("line", (line) => {
