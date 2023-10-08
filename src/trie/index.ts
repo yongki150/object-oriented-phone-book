@@ -23,7 +23,7 @@ const Trie = function (this: Trie) {
 Trie.prototype = Object.create(Database.prototype);
 Trie.prototype.constructor = Trie;
 
-Trie.prototype.addNewNode = function (param: UserData): void {
+Trie.prototype.addNewNode = function (this: Trie, param: UserData): void {
   const { name, phone } = param;
   let cur: TrieNode = this.root;
 
@@ -40,7 +40,7 @@ Trie.prototype.addNewNode = function (param: UserData): void {
   this.size += 1;
 };
 
-Trie.prototype.findNode = function (word: string): TrieNode | void {
+Trie.prototype.findNode = function (this: Trie, word: string): TrieNode | void {
   let cur: TrieNode = this.root;
 
   for (const each of word) {
@@ -56,7 +56,10 @@ Trie.prototype.findNode = function (word: string): TrieNode | void {
   return cur.getIsEndOfWord() ? cur : undefined;
 };
 
-Trie.prototype.printAllNode = function (node: TrieNode = this.root): void {
+Trie.prototype.printAllNode = function (
+  this: Trie,
+  node: TrieNode = this.root
+): void {
   if (node.getIsEndOfWord()) {
     console.log(`> ${JSON.stringify(node.getUserData())}`);
     return;
@@ -68,6 +71,7 @@ Trie.prototype.printAllNode = function (node: TrieNode = this.root): void {
 };
 
 Trie.prototype.removeNode = function (
+  this: Trie,
   word: string,
   node: TrieNode = this.root,
   idx: number = 0
@@ -106,14 +110,17 @@ Trie.prototype.removeNode = function (
   return false;
 };
 
-Trie.prototype.loadList = function (param: {
-  fsParam: typeof fs;
-  readlineParam: typeof readline;
-}): void {
+Trie.prototype.loadList = function (
+  this: Trie,
+  param: {
+    fsParam: typeof fs;
+    readlineParam: typeof readline;
+  }
+): void {
   Database.prototype.loadList.call(this, param);
 };
 
-Trie.prototype.saveList = function (fsParam: typeof fs): void {
+Trie.prototype.saveList = function (this: Trie, fsParam: typeof fs): void {
   const stream: fs.WriteStream = Database.prototype.saveList.call(
     this,
     fsParam

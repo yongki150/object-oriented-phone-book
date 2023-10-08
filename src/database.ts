@@ -62,7 +62,10 @@ Database.prototype.loadList = function (
   });
 };
 
-Database.prototype.saveList = function (fsParam: typeof fs): fs.WriteStream {
+Database.prototype.saveList = function (
+  this: Database,
+  fsParam: typeof fs
+): fs.WriteStream {
   const stream = fsParam.createWriteStream(this.filePath);
 
   if (!this.getSize()) {

@@ -34,7 +34,10 @@ const UserInterface = function (
   ): UserInterface;
 };
 
-UserInterface.prototype.add = function (param: typeof faker): void {
+UserInterface.prototype.add = function (
+  this: UserInterface,
+  param: typeof faker
+): void {
   const name: string = param.person.fullName();
   const phone: string = param.phone.number();
 
@@ -51,7 +54,10 @@ UserInterface.prototype.add = function (param: typeof faker): void {
   );
 };
 
-UserInterface.prototype.search = function (name: string): void {
+UserInterface.prototype.search = function (
+  this: UserInterface,
+  name: string
+): void {
   const node: TrieNode = this.database.findNode(name);
 
   if (!node) {
@@ -64,13 +70,16 @@ UserInterface.prototype.search = function (name: string): void {
   );
 };
 
-UserInterface.prototype.printAll = function (): void {
+UserInterface.prototype.printAll = function (this: UserInterface): void {
   this.database.printAllNode();
 
   console.log(`>\n> 총 개수: ${this.database.getSize()}`);
 };
 
-UserInterface.prototype.remove = function (name: string): void {
+UserInterface.prototype.remove = function (
+  this: UserInterface,
+  name: string
+): void {
   const node: TrieNode = this.database.findNode(name);
 
   if (!node) {
@@ -84,11 +93,14 @@ UserInterface.prototype.remove = function (name: string): void {
   console.log(`> INFO: ${JSON.stringify(userData)} 정보를 삭제합니다.`);
 };
 
-UserInterface.prototype.run = function (param: {
-  fakerParam: typeof faker;
-  fsParam: typeof fs;
-  readlineParam: typeof readline;
-}): void {
+UserInterface.prototype.run = function (
+  this: UserInterface,
+  param: {
+    fakerParam: typeof faker;
+    fsParam: typeof fs;
+    readlineParam: typeof readline;
+  }
+): void {
   const readline: readline.Interface = param.readlineParam.createInterface({
     input: process.stdin,
     output: process.stdout,

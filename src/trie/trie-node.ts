@@ -24,7 +24,10 @@ TrieNode.prototype.getUserData = function (this: TrieNode): UserData | void {
   return this.userData;
 };
 
-TrieNode.prototype.setUserData = function (param: UserData): void {
+TrieNode.prototype.setUserData = function (
+  this: TrieNode,
+  param: UserData
+): void {
   this.userData = param;
 };
 
@@ -39,23 +42,26 @@ TrieNode.prototype.getChild = function (
   return this.children.get(char);
 };
 
-TrieNode.prototype.setChild = function (char: string): void {
+TrieNode.prototype.setChild = function (this: TrieNode, char: string): void {
   this.children.set(char, new TrieNode());
 };
 
-TrieNode.prototype.deleteChild = function (char: string): void {
+TrieNode.prototype.deleteChild = function (this: TrieNode, char: string): void {
   this.children.delete(char);
 };
 
-TrieNode.prototype.getChildrenSize = function (): number {
+TrieNode.prototype.getChildrenSize = function (this: TrieNode): number {
   return this.children.size;
 };
 
-TrieNode.prototype.getIsEndOfWord = function (): boolean {
+TrieNode.prototype.getIsEndOfWord = function (this: TrieNode): boolean {
   return this.isEndOfWord;
 };
 
-TrieNode.prototype.setIsEndOfWord = function (isEndOfWord: boolean): void {
+TrieNode.prototype.setIsEndOfWord = function (
+  this: TrieNode,
+  isEndOfWord: boolean
+): void {
   this.isEndOfWord = isEndOfWord;
 };
 

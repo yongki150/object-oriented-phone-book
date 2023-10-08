@@ -14,11 +14,11 @@ const ListNode = function (this: ListNode, param: UserData) {
   this.next = null;
 } as any as { new (param: UserData): ListNode };
 
-ListNode.prototype.getUserData = function (): UserData {
+ListNode.prototype.getUserData = function (this: ListNode): UserData {
   return this.userData;
 };
 
-ListNode.prototype.getName = function (): string {
+ListNode.prototype.getName = function (this: ListNode): string {
   return this.userData.name;
 };
 
@@ -26,7 +26,7 @@ ListNode.prototype.getNext = function (this: ListNode): ListNode | null {
   return this.next;
 };
 
-ListNode.prototype.setNext = function (node: ListNode): void {
+ListNode.prototype.setNext = function (this: ListNode, node: ListNode): void {
   this.next = node;
 };
 

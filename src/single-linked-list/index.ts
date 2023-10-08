@@ -23,7 +23,10 @@ const SingleLinkedList = function (this: SingleLinkedList) {
 SingleLinkedList.prototype = Object.create(Database.prototype);
 SingleLinkedList.prototype.constructor = SingleLinkedList;
 
-SingleLinkedList.prototype.addNewNode = function (param: UserData): void {
+SingleLinkedList.prototype.addNewNode = function (
+  this: SingleLinkedList,
+  param: UserData
+): void {
   const newNode = new ListNode(param);
 
   if (!this.head) {
@@ -90,10 +93,13 @@ SingleLinkedList.prototype.removeNode = function (
   this.size -= 1;
 };
 
-SingleLinkedList.prototype.loadList = function (param: {
-  fsParam: typeof fs;
-  readlineParam: typeof readline;
-}): void {
+SingleLinkedList.prototype.loadList = function (
+  this: SingleLinkedList,
+  param: {
+    fsParam: typeof fs;
+    readlineParam: typeof readline;
+  }
+): void {
   Database.prototype.loadList.call(this, param);
 };
 
