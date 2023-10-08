@@ -4,15 +4,16 @@ import Database from "../database";
 import ListNode from "./list-node";
 import UserData from "../types/user-data";
 
-type SingleLinkedList = Database & {
+interface SingleLinkedList extends Database {
   head: ListNode | null;
   addNewNode(param: UserData): void;
-  findNode(word: string): ListNode | void;
-  printAllNode(node: ListNode): void;
-  removeNode(word: string, node: ListNode, idx: number): boolean;
+  findNode: ((name: string) => ListNode | void) & Database["findNode"];
+  printAllNode: ((node: ListNode) => void) & Database["printAllNode"];
+  removeNode: ((name: string, node: ListNode, idx: number) => boolean) &
+    Database["removeNode"];
   loadList(param: { fsParam: typeof fs; readlineParam: typeof readline }): void;
-  saveList(fsParam: typeof fs): void;
-};
+  saveList: ((fsParam: typeof fs) => void) & Database["saveList"];
+}
 
 const SingleLinkedList = function (this: SingleLinkedList) {
   Database.call(this);

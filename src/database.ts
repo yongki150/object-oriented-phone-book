@@ -1,18 +1,19 @@
 import fs from "node:fs";
 import readline from "node:readline/promises";
 import UserData from "./types/user-data";
+import Node from "./types/node";
 
-type Database = {
+interface Database {
   filePath: "assets/data.txt";
   size: number;
   addNewNode(param: UserData): void;
-  findNode<T>(key: string): T;
+  findNode(key: string): Node;
   printAllNode(): void;
   removeNode(key: string): void;
   loadList(param: { fsParam: typeof fs; readlineParam: typeof readline }): void;
   saveList(fsParam: typeof fs): fs.WriteStream;
   getSize(): number;
-};
+}
 
 const Database = function (this: Database) {
   this.filePath = "assets/data.txt";
@@ -23,7 +24,7 @@ Database.prototype.addNewNode = function (param: UserData): void {
   throw new Error("구현체에서 호출해주세요.");
 };
 
-Database.prototype.findNode = function <T>(key: string): T {
+Database.prototype.findNode = function (key: string): Node {
   throw new Error("구현체에서 호출해주세요.");
 };
 

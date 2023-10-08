@@ -4,15 +4,16 @@ import Database from "../database";
 import TrieNode from "./trie-node";
 import UserData from "../types/user-data";
 
-type Trie = Database & {
+interface Trie extends Database {
   root: TrieNode;
   addNewNode(param: UserData): void;
-  findNode(word: string): TrieNode | void;
-  printAllNode(node: TrieNode): void;
-  removeNode(word: string, node: TrieNode, idx: number): boolean;
+  findNode: ((word: string) => TrieNode | void) & Database["findNode"];
+  printAllNode: ((node: TrieNode) => void) & Database["printAllNode"];
+  removeNode: ((word: string, node: TrieNode, idx: number) => boolean) &
+    Database["removeNode"];
   loadList(param: { fsParam: typeof fs; readlineParam: typeof readline }): void;
-  saveList(fsParam: typeof fs): void;
-};
+  saveList: ((fsParam: typeof fs) => void) & Database["saveList"];
+}
 
 const Trie = function (this: Trie) {
   Database.call(this);
