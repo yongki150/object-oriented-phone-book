@@ -20,7 +20,7 @@ const TrieNode = function (this: TrieNode) {
   this.isEndOfWord = false;
 } as any as { new (): TrieNode };
 
-TrieNode.prototype.getUserData = function (): UserData {
+TrieNode.prototype.getUserData = function (this: TrieNode): UserData | void {
   return this.userData;
 };
 
@@ -32,7 +32,10 @@ TrieNode.prototype.deleteUserData = function (this: TrieNode): void {
   delete this.userData;
 };
 
-TrieNode.prototype.getChild = function (char: string): TrieNode {
+TrieNode.prototype.getChild = function (
+  this: TrieNode,
+  char: string
+): TrieNode | void {
   return this.children.get(char);
 };
 

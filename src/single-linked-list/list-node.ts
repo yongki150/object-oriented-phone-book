@@ -22,7 +22,7 @@ ListNode.prototype.getName = function (): string {
   return this.userData.name;
 };
 
-ListNode.prototype.getNext = function (): ListNode {
+ListNode.prototype.getNext = function (this: ListNode): ListNode | null {
   return this.next;
 };
 

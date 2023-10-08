@@ -37,8 +37,11 @@ SingleLinkedList.prototype.addNewNode = function (param: UserData): void {
   this.size += 1;
 };
 
-SingleLinkedList.prototype.findNode = function (name: string): ListNode | void {
-  let cur: ListNode = this.head;
+SingleLinkedList.prototype.findNode = function (
+  this: SingleLinkedList,
+  name: string
+): ListNode | void {
+  let cur: ListNode | null = this.head;
 
   while (cur) {
     if (cur.getName() === name) {
@@ -49,8 +52,10 @@ SingleLinkedList.prototype.findNode = function (name: string): ListNode | void {
   }
 };
 
-SingleLinkedList.prototype.printAllNode = function (): void {
-  let cur: ListNode = this.head;
+SingleLinkedList.prototype.printAllNode = function (
+  this: SingleLinkedList
+): void {
+  let cur: ListNode | null = this.head;
   let i: number = 1;
 
   while (cur) {
@@ -61,11 +66,14 @@ SingleLinkedList.prototype.printAllNode = function (): void {
   }
 };
 
-SingleLinkedList.prototype.removeNode = function (name: string): void {
+SingleLinkedList.prototype.removeNode = function (
+  this: SingleLinkedList,
+  name: string
+): void {
   let prev = null;
-  let cur: ListNode = this.head;
+  let cur: ListNode | null = this.head;
 
-  if (!cur.getNext()) {
+  if (!cur?.getNext()) {
     this.head = null;
   }
 
@@ -89,12 +97,15 @@ SingleLinkedList.prototype.loadList = function (param: {
   Database.prototype.loadList.call(this, param);
 };
 
-SingleLinkedList.prototype.saveList = function (fsParam: typeof fs): void {
+SingleLinkedList.prototype.saveList = function (
+  this: SingleLinkedList,
+  fsParam: typeof fs
+): void {
   const stream: fs.WriteStream = Database.prototype.saveList.call(
     this,
     fsParam
   );
-  let cur: ListNode = this.head;
+  let cur: ListNode | null = this.head;
 
   while (cur) {
     stream.write(JSON.stringify(cur.getUserData()) + "\n");
